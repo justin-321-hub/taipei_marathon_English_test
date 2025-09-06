@@ -253,10 +253,11 @@ messages.push({
   id: uid(),
   role: "assistant",
   text:
-    "歡迎來到臺北馬拉松智慧客服！\n我是小幫手，隨時為您解答~ 有什麼問題可以為您解答的嗎?",
+    "Welcome to Taipei Marathon Smart Customer Service! I'm your assistant, ready to answer your questions anytime. Is there anything I can help you with?",
   ts: Date.now(),
 });
 render();
+
 
 
 
