@@ -164,7 +164,7 @@ async function sendText(text) {
     if (!res.ok) {
       // ★ 新增：特別處理 502 / 404
       if (res.status === 502 || res.status === 404) {
-        throw new Error("網路不穩定，請再試一次!");
+        throw new Error("The network is unstable, please try again!");
       }
 
       // 優先使用後端提供的錯誤訊息欄位
@@ -195,7 +195,7 @@ async function sendText(text) {
         Object.keys(data).length === 0;
 
       replyText = isPlainEmptyObject
-        ? "網路不穩定，請再試一次" // ★ 新增規則
+        ? "The network is unstable, please try again" // ★ 新增規則
         : JSON.stringify(data, null, 2); // 顯示完整物件，便於除錯
     }
 
@@ -213,7 +213,7 @@ async function sendText(text) {
     // 統一錯誤訊息格式
     const friendly =
       // 若使用者裝置離線，提供更直覺提示
-      (!navigator.onLine && "目前處於離線狀態，請檢查網路連線後再試一次") ||
+      (!navigator.onLine && "Currently offline, please check your network connection and try again") ||
       // 其他錯誤，帶上簡短錯誤說明
       `${err?.message || err}`;//取得回覆時發生錯誤：
 
@@ -257,6 +257,7 @@ messages.push({
   ts: Date.now(),
 });
 render();
+
 
 
 
