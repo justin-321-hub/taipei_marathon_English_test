@@ -7,6 +7,7 @@
  * 3) 思考中動畫控制（輸入禁用/解禁）
  * 4) 呼叫後端 /api/chat，強化回應解析與錯誤處理
  * 5) ★ 新增：當回傳物件為 {} 時，顯示「網路不穩定，請再試一次」
+ * 6) ★ 新增：特定錯誤時顯示「Please rephrase, thank you.」
  *
  * 依賴：
  * - 頁面需有以下元素：
@@ -128,7 +129,24 @@ async function sendText(text) {
   const content = (text ?? elInput?.value ?? "").trim();
   if (!content) return;
 
-  // 先插入使用者訊息到畫面
+  // ★ 新增：處理問號的邏輯
+  // 1. 如果問號在句尾，直接刪除
+  // 2. 如果問號不在句尾，刪除後加入換行符號
+  let processedContent = content;
+  const questionMarkIndex = processedContent.indexOf('?');
+  
+  if (questionMarkIndex !== -1) {
+    // 找到問號
+    if (questionMarkIndex === processedContent.length - 1) {
+      // 問號在句尾，直接刪除
+      processedContent = processedContent.slice(0, -1);
+    } else {
+      // 問號不在句尾，刪除問號並加入換行
+      processedContent = processedContent.slice(0, questionMarkIndex) + '\n' + processedContent.slice(questionMarkIndex + 1);
+    }
+  }
+
+  // 先插入使用者訊息到畫面（顯示原始輸入）
   const userMsg = { id: uid(), role: "user", text: content, ts: Date.now() };
   messages.push(userMsg);
   if (elInput) elInput.value = "";
@@ -138,14 +156,14 @@ async function sendText(text) {
   setThinking(true);
 
   try {
-    // 呼叫後端 /api/chat
+    // 呼叫後端 /api/chat（使用處理過的文字）
     const res = await fetch(api("/api/chat"), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "X-Client-Id": clientId,
       },
-      body: JSON.stringify({ text: content, clientId , language: "英文"}),
+      body: JSON.stringify({ text: processedContent, clientId , language: "英文"}),
     });
 
     // 以文字讀回（避免直接 .json() 遇到空字串拋錯）
@@ -179,13 +197,30 @@ async function sendText(text) {
      * 1) 若 data 是字串，直接當回覆
      * 2) 若 data 是物件，優先用 data.text 或 data.message
      * 3) 若是空物件 {} → 顯示「網路不穩定，請再試一次」
-     * 4) 其他物件 → JSON 字串化後顯示（利於除錯）
+     * 4) 若包含特定 clientId 錯誤格式 → 顯示「Please rephrase, thank you.」
+     * 5) 其他物件 → JSON 字串化後顯示（利於除錯）
      */
     let replyText;
-    if (typeof data === "string") {
+    
+    // 檢查是否為特定的 clientId 錯誤格式
+    const isClientIdError = data && typeof data === 'object' && 
+                           data.clientId && 
+                           typeof data.clientId === 'string' &&
+                           data.clientId.includes('"clientId":') &&
+                           data.text === '""';
+    
+    if (isClientIdError) {
+      // ★ 新增：特定錯誤格式時顯示此訊息
+      replyText = "Please rephrase, thank you.";
+    } else if (typeof data === "string") {
       replyText = data.trim() || "（空白回覆）";
     } else if (data && (data.text || data.message)) {
-      replyText = String(data.text || data.message);
+      // 如果 text 是空字串且有 clientId 錯誤，也顯示 rephrase 訊息
+      if (data.text === '""' && data.clientId) {
+        replyText = "Please rephrase, thank you.";
+      } else {
+        replyText = String(data.text || data.message);
+      }
     } else {
       // data 不是字串，也沒有 text/message 欄位
       const isPlainEmptyObject =
@@ -210,12 +245,17 @@ async function sendText(text) {
     // 發生錯誤時也要關閉思考動畫
     setThinking(false);
 
+    // ★ 新增：檢查錯誤訊息是否包含特定的 clientId 錯誤模式
+    const errorMsg = err?.message || String(err);
+    const hasClientIdError = errorMsg.includes('"clientId":') || 
+                             errorMsg.includes('a33cff9a-2c1b-4ebf-a75e-f58e8d2821dc');
+
     // 統一錯誤訊息格式
-    const friendly =
-      // 若使用者裝置離線，提供更直覺提示
-      (!navigator.onLine && "Currently offline, please check your network connection and try again") ||
-      // 其他錯誤，帶上簡短錯誤說明
-      `${err?.message || err}`;//取得回覆時發生錯誤：
+    const friendly = hasClientIdError 
+      ? "Please rephrase, thank you."  // ★ 特定錯誤時顯示此訊息
+      : (!navigator.onLine 
+          ? "Currently offline, please check your network connection and try again"
+          : `${errorMsg}`);
 
     const botErr = {
       id: uid(),
@@ -257,10 +297,3 @@ messages.push({
   ts: Date.now(),
 });
 render();
-
-
-
-
-
-
-
