@@ -98,7 +98,7 @@ function render() {
   elMessages.innerHTML = "";
 
   for (const m of messages) {
-    const isUser = m.role === "test";
+    const isUser = m.role === "user";
 
     const row = document.createElement("div");
     row.className = `msg ${isUser ? "user" : "bot"}`;
