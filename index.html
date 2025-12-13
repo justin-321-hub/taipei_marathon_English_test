@@ -1,49 +1,65 @@
-<!doctype html>
-<html lang="zh-Hant">
-  <head>
-    <meta charset="utf-8" />
-    <title>🏃‍♂Taipei Marathon Smart Customer Service Center</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <link rel="stylesheet" href="./styles.css" />
-  </head>
-  <body>
-    <!-- 頂部區塊：公司資訊 -->
-    <header class="topbar">
-      <img src="https://raw.githubusercontent.com/justin-321-hub/taipei_marathon/refs/heads/main/assets/logo.png" class="logo" alt="logo" />
-      <div class="brand">
-        <div class="title">🏃‍♂️ Taipei Marathon Smart Customer Service Center</div>
-        <div class="subtitle">Your exclusive marathon consultant, providing comprehensive support before and after the race</div>
-      </div>
-    </header>
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>台北馬拉松智慧客服 — Taipei Marathon AI</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
 
-    <!-- 主體：聊天區 -->
-    <main class="main">
-      <div id="messages" class="messages"></div>
+  <!-- 頂部列 -->
+  <header class="topbar">
+    <img class="logo" 
+         src="https://raw.githubusercontent.com/justin-321-hub/taipei_marathon/refs/heads/main/assets/logo.png" 
+         alt="Logo">
+    <div class="brand">
+      <div class="title">台北馬拉松智慧客服</div>
+      <div class="subtitle">Taipei Marathon Smart Service</div>
+    </div>
+  </header>
 
-      <!-- 思考中：等待 API 完成前顯示。預設隱藏，JS 以 .hidden 切換 -->
-      <div id="thinking" class="thinking hidden" role="status" aria-live="polite" aria-busy="true">
-        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-        <span class="thinking-text">Customer service is thinking about it and has figured it out soon!</span>
-      </div>
-    </main>
+  <!-- 主體 -->
+  <main class="main">
+    <!-- 訊息清單 -->
+    <div id="messages" class="messages"></div>
 
-    <!-- 輸入列（已移除語音按鈕） -->
-    <footer class="composer">
-      <textarea id="txtInput" class="input"
-          rows="1"
-          placeholder="Input message (Shift+Enter for line break, Enter to Go)"
-          enterkeyhint="send" autocomplete="off" autocapitalize="off" autocorrect="off"></textarea>
-      <button id="btnSend" class="btn btn-primary">Go</button>
-    </footer>
+    <!-- 思考中動畫 -->
+    <div id="thinking" class="thinking hidden">
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span style="margin-left:4px;">客服正在思考 快出來了!</span>
+    </div>
+  </main>
 
-    <!-- 已移除語音播放/暫停 SVG 與麥克風按鈕 -->
+  <!-- 輸入列 -->
+  <div class="composer">
+    <!-- 語言選擇按鈕 -->
+    <select id="langSelect" class="lang-select" title="選擇回應語言">
+      <option value="繁體中文">🇹🇼 中文</option>
+      <option value="英文" selected>🇬🇧 English</option>
+    </select>
 
-    <script src="./app.js"></script>
-  </body>
+    <textarea id="txtInput" class="input" placeholder="請輸入您的問題..." rows="1"></textarea>
+
+    <!-- 隱藏的文件輸入 -->
+    <input type="file" id="fileInput" accept=".txt" style="display: none;">
+
+    <!-- 上傳按鈕 -->
+    <button id="btnUpload" class="btn btn-primary" title="上傳txt文本批次提問">
+      📤 上傳
+    </button>
+
+    <!-- 送出按鈕 -->
+    <button id="btnSend" class="btn btn-primary">送出</button>
+
+    <!-- 中斷按鈕 -->
+    <button id="btnStop" class="btn btn-primary" disabled title="中斷批次處理">
+      ⏸️ 中斷
+    </button>
+  </div>
+
+  <script src="app.js"></script>
+</body>
 </html>
-
-
-
-
-
-
