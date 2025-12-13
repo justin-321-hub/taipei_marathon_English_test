@@ -1,33 +1,26 @@
 /* =========================================
-   1. 基本變數與排版設定
-   ========================================= */
+1. 基本變數與排版設定
+========================================= */
 :root {
   /* 🎨 背景色 */
-  --bg: #5367A0;              /* 頁面背景色 */
-
+  --bg: #5367A0; /* 頁面背景色 */
   /* 🎨 面板底色 */
-  --panel: #67A2FF;           /* 頂部與輸入區背景 */
-
+  --panel: #67A2FF; /* 頂部與輸入區背景 */
   /* 🎨 邊框色 */
   --border: #e5e7eb;
-
   /* 🎨 主要文字色 */
   --text: #111827;
-
   /* 🎨 次要/灰色文字 */
   --muted: #6b7280;
-
   /* 🎨 主色（按鈕、強調） */
-  --primary: #2563eb;         /* 主色（正常狀態） */
-  --primary-600: #1d4ed8;     /* 主色（hover 狀態） */
-
+  --primary: #2563eb; /* 主色（正常狀態） */
+  --primary-600: #1d4ed8; /* 主色（hover 狀態） */
   /* 🎨 使用者訊息泡泡色 */
-  --bubble-user: #2563eb;      /* 使用者泡泡背景 */
+  --bubble-user: #2563eb; /* 使用者泡泡背景 */
   --bubble-user-text: #ffffff; /* 使用者泡泡文字 */
-
   /* 🎨 機器人訊息泡泡色 */
-  --bubble-bot: #ffffff;       /* 機器人泡泡背景 */
-  --bubble-bot-text: #111827;  /* 機器人泡泡文字 */
+  --bubble-bot: #ffffff; /* 機器人泡泡背景 */
+  --bubble-bot-text: #111827; /* 機器人泡泡文字 */
 }
 
 * { box-sizing: border-box; }
@@ -42,25 +35,27 @@ body {
 .hidden { display: none !important; }
 
 /* =========================================
-   2. 頂部列 (Header)
-   ========================================= */
+2. 頂部列 (Header)
+========================================= */
 .topbar {
   position: sticky; top: 0; z-index: 10;
   height: 64px; background: var(--panel); border-bottom: 1px solid var(--border);
   display: flex; align-items: center; gap: 12px; padding: 0 16px;
 }
+
 .logo { width: 36px; height: 36px; border-radius: 6px; }
 .brand .title { font-weight: 600; }
 .brand .subtitle { font-size: 12px; color: var(--muted); }
 
 /* =========================================
-   3. 主體與訊息清單
-   ========================================= */
+3. 主體與訊息清單
+========================================= */
 .main {
   flex: 1;
   display: flex; flex-direction: column; align-items: center;
   padding: 12px;
 }
+
 .messages {
   width: 100%; max-width: 820px;
   height: calc(100vh - 64px - 72px);
@@ -72,14 +67,15 @@ body {
 /* 單則訊息容器 */
 .msg { display: flex; align-items: flex-start; gap: 10px; }
 .msg.user { flex-direction: row-reverse; }
+
 .avatar {
   width: 36px; height: 36px; border-radius: 999px;
   background: #fff; border: 1px solid var(--border); flex-shrink: 0;
 }
 
 /* =========================================
-   4. 對話泡泡 (Bubble) 核心樣式
-   ========================================= */
+4. 對話泡泡 (Bubble) 核心樣式
+========================================= */
 .bubble {
   max-width: 85%; /*稍微加寬一點以容納表格*/
   border: 1px solid var(--border); border-radius: 16px;
@@ -87,9 +83,8 @@ body {
   background: var(--bubble-bot); color: var(--bubble-bot-text);
   box-shadow: 0 1px 3px rgba(0,0,0,.05);
   font-size: 14px; line-height: 1.5;
-  
   /* ★ 修改：為了正確顯示 HTML，預設使用 normal */
-  white-space: normal; 
+  white-space: normal;
   word-break: break-word;
 }
 
@@ -98,21 +93,20 @@ body {
   background: var(--bubble-user);
   color: var(--bubble-user-text);
   border-color: transparent;
-  
   /* ★ 修改：使用者輸入仍為純文字，需要保留換行 */
-  white-space: pre-wrap; 
+  white-space: pre-wrap;
 }
 
 /* =========================================
-   5. n8n HTML 內容樣式優化 (表格、清單、連結)
-   ========================================= */
-
+5. n8n HTML 內容樣式優化 (表格、清單、連結)
+========================================= */
 /* 連結 */
 .bubble a {
   color: #2563eb;
   text-decoration: underline;
   word-break: break-all;
 }
+
 .bubble a:hover {
   color: #1d4ed8;
 }
@@ -127,16 +121,19 @@ body {
   border-radius: 8px;
   overflow: hidden; /* 讓圓角生效 */
 }
+
 .bubble th, .bubble td {
   border: 1px solid #e5e7eb;
   padding: 8px 10px;
   text-align: left;
 }
+
 .bubble th {
   background-color: #f3f4f6;
   font-weight: 600;
   color: #374151;
 }
+
 .bubble tr:nth-child(even) {
   background-color: #f9fafb;
 }
@@ -146,6 +143,7 @@ body {
   margin: 6px 0 6px 24px;
   padding: 0;
 }
+
 .bubble li {
   margin-bottom: 4px;
 }
@@ -154,9 +152,11 @@ body {
 .bubble p {
   margin: 0 0 8px 0;
 }
+
 .bubble p:last-child {
   margin-bottom: 0;
 }
+
 .bubble h1, .bubble h2, .bubble h3 {
   margin: 10px 0 6px 0;
   font-size: 1.1em;
@@ -173,8 +173,8 @@ body {
 }
 
 /* =========================================
-   6. 思考中動畫 (Thinking)
-   ========================================= */
+6. 思考中動畫 (Thinking)
+========================================= */
 .thinking {
   width: 100%; max-width: 820px;
   display: flex; align-items: center; gap: .5rem;
@@ -184,22 +184,25 @@ body {
   box-shadow: 0 1px 3px rgba(0,0,0,.04);
   font-size: 14px;
 }
+
 .thinking .dot {
   width: 6px; height: 6px; border-radius: 50%;
   background: currentColor; opacity: .35; display: inline-block;
   animation: dotBounce 1.05s infinite ease-in-out;
 }
+
 .thinking .dot:nth-child(1) { animation-delay: 0s; }
 .thinking .dot:nth-child(2) { animation-delay: .15s; }
 .thinking .dot:nth-child(3) { animation-delay: .3s; }
+
 @keyframes dotBounce {
   0%, 80%, 100% { transform: scale(0.7); opacity: .35; }
   40% { transform: scale(1); opacity: 1; }
 }
 
 /* =========================================
-   7. 輸入列 (Composer)
-   ========================================= */
+7. 輸入列 (Composer)
+========================================= */
 .composer {
   min-height: 72px;
   height: auto;
@@ -211,8 +214,34 @@ body {
   padding: 8px 12px;
   justify-content: center;
 }
+
+/* 語言選擇下拉選單 */
+.lang-select {
+  height: 40px;
+  padding: 0 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: white;
+  color: var(--text);
+  font-size: 14px;
+  cursor: pointer;
+  outline: none;
+  min-width: 100px;
+  flex-shrink: 0;
+}
+
+.lang-select:hover {
+  background: #f9fafb;
+}
+
+.lang-select:disabled {
+  background: #e5e7eb;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
 .composer .input {
-  width: 100%; max-width: 620px;
+  width: 100%; max-width: 520px;
   min-height: 40px;
   max-height: 120px;
   height: auto;
@@ -226,25 +255,59 @@ body {
   white-space: pre-wrap;
   word-break: break-word;
 }
+
 .btn {
   height: 40px; padding: 0 14px; border-radius: 12px; border: 1px solid transparent; cursor: pointer;
+  flex-shrink: 0;
 }
+
 .btn-primary { background: var(--primary); color: #fff; }
 .btn-primary:hover { background: var(--primary-600); }
+.btn-primary:disabled { 
+  background: #9ca3af; 
+  cursor: not-allowed; 
+  opacity: 0.6;
+}
 .btn-outline { background: #f3f4f6; border-color: var(--border); }
 .btn-outline:hover { background: #e9ecf1; }
 
 /* =========================================
-   8. 行動裝置 RWD 微調
-   ========================================= */
+8. 行動裝置 RWD 微調
+========================================= */
+@media (max-width: 768px) {
+  .composer {
+    flex-wrap: wrap;
+  }
+
+  .lang-select {
+    min-width: 90px;
+  }
+
+  .composer .input {
+    max-width: 100%;
+    flex: 1 1 100%;
+    order: -1; /* 讓輸入框在第一行 */
+  }
+}
+
 @media (max-width: 480px) {
   .bubble { max-width: 90%; }
   .messages { padding: 12px; }
-  
+
   /* 手機上表格若太寬可橫向捲動 */
   .bubble table {
     display: block;
     overflow-x: auto;
     white-space: nowrap;
+  }
+
+  .btn {
+    padding: 0 10px;
+    font-size: 13px;
+  }
+
+  .lang-select {
+    min-width: 80px;
+    font-size: 13px;
   }
 }
